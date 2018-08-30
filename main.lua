@@ -1,4 +1,6 @@
 local SCREEN_WIDTH, SCREEN_HEIGHT = love.graphics.getDimensions()
+local g = 500
+local jumpSpeed = 165
 
 function love.load()
     birdY = 200
@@ -6,8 +8,8 @@ function love.load()
 end
 
 function love.update(dt)
-    birdYSpeed = birdYSpeed + (516 * dt)
-    birdY = birdY + (30 * dt)
+    birdYSpeed = birdYSpeed + (g * dt)
+    birdY = birdY + birdYSpeed * dt
 end
 
 function love.draw()
@@ -17,8 +19,12 @@ function love.draw()
     love.graphics.rectangle('fill', 62, birdY, 30, 25)
 end
 
-function love.keyPressed(key)
+function love.keypressed(key)
+    if key == 'escape' then
+        love.event.quit()
+    end
+
     if birdY > 0 then
-        birdYSpeed = -165
+        birdYSpeed = -jumpSpeed
     end
 end
