@@ -1,9 +1,4 @@
-function love.draw()
-    love.graphics.setColor(.13, .36, .46)
-    love.graphics.rectangle('fill', 0, 0, 300, 388)
-    love.graphics.setColor(.87, .84, .27)
-    love.graphics.rectangle('fill', 62, birdY, 30, 25)
-end
+local SCREEN_WIDTH, SCREEN_HEIGHT = love.graphics.getDimensions()
 
 function love.load()
     birdY = 200
@@ -15,8 +10,15 @@ function love.update(dt)
     birdY = birdY + (30 * dt)
 end
 
+function love.draw()
+    love.graphics.setColor(.13, .36, .46)
+    love.graphics.rectangle('fill', 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
+    love.graphics.setColor(.87, .84, .27)
+    love.graphics.rectangle('fill', 62, birdY, 30, 25)
+end
+
 function love.keyPressed(key)
     if birdY > 0 then
-        birdYSpeed = -165 
+        birdYSpeed = -165
     end
 end
