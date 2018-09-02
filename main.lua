@@ -2,24 +2,32 @@ local SCREEN_WIDTH, SCREEN_HEIGHT = love.graphics.getDimensions()
 local g = 500
 local jumpSpeed = 165
 local pipeWidth = 54
+local pipeX 
 local pipeY = 250
 local pipeYmin = 30
 local pipeSpace = 100
+
 
 function love.load()
     birdY = 200
     birdX = 62
     birdYSpeed = 0
-    pipeY = love.math.random(pipeYmin, SCREEN_HEIGHT - pipeSpace - pipeYmin)
     pipe2Y = pipeY + pipeSpace
-    pipeX = SCREEN_WIDTH - pipeWidth
+    pipeX = SCREEN_WIDTH - pipeWidth 
+    function resetPipe()
+        pipeY = love.math.random(pipeYmin, SCREEN_HEIGHT - pipeSpace - pipeYmin)
+    end
+    resetPipe()
 end
 
 function love.update(dt)
     birdYSpeed = birdYSpeed + (g * dt)
     birdY = birdY + birdYSpeed * dt
-    birdX = birdX + (60 * dt)
+    birdX = birdX + (35 * dt)
     pipeX = pipeX - (60 * dt)
+    if (pipeX + pipeWidth) < 0 then
+        resetPipe()
+    end
 end
 
 function love.draw()
@@ -41,5 +49,5 @@ function love.keypressed(key)
         birdYSpeed = -jumpSpeed
     end
 
-    love.load()
+   -- love.load()
 end
