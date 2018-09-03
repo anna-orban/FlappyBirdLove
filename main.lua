@@ -16,6 +16,8 @@ function love.load()
     pipeX = SCREEN_WIDTH - pipeWidth 
     function resetPipe()
         pipeY = love.math.random(pipeYmin, SCREEN_HEIGHT - pipeSpace - pipeYmin)
+        pipe2Y = SCREEN_HEIGHT-pipeY + pipeSpace
+        pipeX = SCREEN_WIDTH + pipeWidth
     end
     resetPipe()
 end
@@ -23,7 +25,6 @@ end
 function love.update(dt)
     birdYSpeed = birdYSpeed + (g * dt)
     birdY = birdY + birdYSpeed * dt
-    birdX = birdX + (35 * dt)
     pipeX = pipeX - (60 * dt)
     if (pipeX + pipeWidth) < 0 then
         resetPipe()
