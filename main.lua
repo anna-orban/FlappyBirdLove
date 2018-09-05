@@ -2,43 +2,54 @@ local SCREEN_WIDTH, SCREEN_HEIGHT = love.graphics.getDimensions()
 local g = 500
 local jumpSpeed = 165
 local pipeWidth = 54
-local pipeX 
-local pipeSpaceY = 250
 local pipeSpaceYmin = 54
 local pipeSpaceHeight = 100
 local birdWidth = 30
 local birdHeight = 25
 
-function resetPipe()
+local function newPipeSpaceY()
     pipeSpaceY = love.math.random(pipeSpaceYmin, SCREEN_HEIGHT - pipeSpaceHeight - pipeSpaceYmin)
-    pipeX = SCREEN_WIDTH
+    return pipeSpaceY
+end
+
+local function drawPipe(pipeX, pipeSpaceY)
+    love.graphics.setColor(.37, .82, .28)
+    love.graphics.rectangle('fill', pipeX , 0, pipeWidth, pipeSpaceY)
+    love.graphics.rectangle('fill', pipeX, pipeSpaceY + pipeSpaceHeight, pipeWidth, SCREEN_HEIGHT - pipeSpaceY - pipeSpaceHeight)
 end
 
 function love.load()
     birdY = 200
     birdX = 62
     birdYSpeed = 0
-    bottomPipeY = pipeSpaceY + pipeSpaceHeight
-    pipeX = SCREEN_WIDTH - pipeWidth 
-    resetPipe()
+    pipe1X = 100
+    pipe1SpaceY = newPipeSpaceY()
+    pipe2X = 200
+    pipe2SpaceY = newPipeSpaceY()
 end
 
 function love.update(dt)
     birdYSpeed = birdYSpeed + (g * dt)
     birdY = birdY + birdYSpeed * dt 
-    pipeX = pipeX - (60 * dt)
-    if (pipeX + pipeWidth) < 0 then
-        resetPipe()
+    local function movePipe(pipeX, pipeSpaceY)
+        pipeX = pipeX - (60 * dt)
+        if (pipeX + pipeWidth) < 0 then
+            pipeX = SCREEN_WIDTH
+            pipeSpaceY = newPipeSpaceY()
+        end
     end
-    if birdX < (pipeX + pipeWidth) and 
-       (birdX + birdWidth) > pipeX and
-       (
-          birdY < pipeSpaceY or
-         (birdY + birdHeight) > (pipeSpaceY + pipeSpaceHeight)
-       )
-    then
-        love.load()
-    end
+        pipe1X, pipe1SpaceY = movePipe(pipe1X, pipe1SpaceY)
+        pipe2X, pipe2SpaceY = movePipe(pipe2X, pipe2SpaceY)
+
+        --[[if birdX < (pipe1X + pipeWidth) and 
+        (birdX + birdWidth) > pipe1X and
+        (
+            birdY < pipe1SpaceY or
+            (birdY + birdHeight) > (pipe1SpaceY + pipeSpaceHeight)
+        )
+        then
+            love.load()
+        end --]]
 end
 
 function love.draw()
@@ -46,9 +57,8 @@ function love.draw()
     love.graphics.rectangle('fill', 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
     love.graphics.setColor(.87, .84, .27)
     love.graphics.rectangle('fill', birdX, birdY, birdWidth, birdHeight)
-    love.graphics.setColor(.37, .82, .28)
-    love.graphics.rectangle('fill', pipeX , 0, pipeWidth, pipeSpaceY)
-    love.graphics.rectangle('fill', pipeX, bottomPipeY, pipeWidth, SCREEN_HEIGHT - bottomPipeY)
+    drawPipe(pipe1X, pipe1SpaceY)
+    drawPipe(pipe2X, pipe2SpaceY)
 end
 
 function love.keypressed(key)
