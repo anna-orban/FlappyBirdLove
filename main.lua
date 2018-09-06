@@ -37,6 +37,7 @@ function love.update(dt)
             pipeX = SCREEN_WIDTH
             pipeSpaceY = newPipeSpaceY()
         end
+        return pipeX, pipeSpaceY
     end
         pipe1X, pipe1SpaceY = movePipe(pipe1X, pipe1SpaceY)
         pipe2X, pipe2SpaceY = movePipe(pipe2X, pipe2SpaceY)
