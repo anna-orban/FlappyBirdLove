@@ -36,6 +36,8 @@ function love.load()
     pipe1SpaceY = newPipeSpaceY()
     pipe2X = SCREEN_WIDTH + SCREEN_WIDTH / 2
     pipe2SpaceY = newPipeSpaceY()
+    score = 0
+    upcomingPipe = 1
 end
 
 function love.update(dt)
@@ -59,6 +61,16 @@ function love.update(dt)
     or birdY > SCREEN_HEIGHT then
         love.load()
     end
+
+    if upcomingPipe == 1 and (birdX > (pipe1X + pipeWidth)) then
+        score = score + 1
+        upcomingPipe = 2
+    end
+
+    if upcomingPipe == 2 and (birdX > (pipe2X + pipeWidth)) then
+        score = score + 1
+        upcomingPipe = 1
+    end
 end
 
 function love.draw()
@@ -68,6 +80,8 @@ function love.draw()
     love.graphics.rectangle('fill', birdX, birdY, birdWidth, birdHeight)
     drawPipe(pipe1X, pipe1SpaceY)
     drawPipe(pipe2X, pipe2SpaceY)
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.print(score, 15, 15)
 end
 
 function love.keypressed(key)
@@ -78,6 +92,4 @@ function love.keypressed(key)
     if birdY > 0 then
         birdYSpeed = -jumpSpeed
     end
-
-   -- love.load()
 end
