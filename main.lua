@@ -55,7 +55,8 @@ function love.update(dt)
     pipe2X, pipe2SpaceY = movePipe(pipe2X, pipe2SpaceY)
 
     if isBirdCollidingWithPipe(pipe1X, pipe1SpaceY)
-    or isBirdCollidingWithPipe(pipe2X, pipe2SpaceY) then
+    or isBirdCollidingWithPipe(pipe2X, pipe2SpaceY)
+    or birdY > SCREEN_HEIGHT then
         love.load()
     end
 end
