@@ -1,8 +1,8 @@
 local SCREEN_WIDTH, SCREEN_HEIGHT = love.graphics.getDimensions()
 local g = 500
-local jumpSpeed = 165
+local jumpSpeed = 190
 local pipeWidth = 54
-local pipeSpaceYmin = 54
+local pipeSpaceYmin = 35
 local pipeSpaceHeight = 100
 local birdWidth = 30
 local birdHeight = 25
@@ -26,6 +26,13 @@ local function isBirdCollidingWithPipe(pipeX, pipeSpaceY)
         birdY < pipeSpaceY or
         (birdY + birdHeight) > (pipeSpaceY + pipeSpaceHeight)
     )
+end
+
+local function updateScoreAndUpcomingPipe(pipe, pipeX, otherPipe)
+    if upcomingPipe == pipe and (birdX > (pipeX + pipeWidth)) then
+        score = score + 1
+        upcomingPipe = otherPipe
+    end
 end
 
 function love.load()
@@ -62,15 +69,8 @@ function love.update(dt)
         love.load()
     end
 
-    if upcomingPipe == 1 and (birdX > (pipe1X + pipeWidth)) then
-        score = score + 1
-        upcomingPipe = 2
-    end
-
-    if upcomingPipe == 2 and (birdX > (pipe2X + pipeWidth)) then
-        score = score + 1
-        upcomingPipe = 1
-    end
+    updateScoreAndUpcomingPipe(1, pipe1X, 2)
+    updateScoreAndUpcomingPipe(2, pipe2X, 1)
 end
 
 function love.draw()
